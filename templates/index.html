@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinBot Pioneer - Intelligent Investment Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="32" height="32" rx="8" fill="url(#gradient)"/>
+                        <path d="M16 8C11.5817 8 8 11.5817 8 16C8 20.4183 11.5817 24 16 24C20.4183 24 24 20.4183 24 16C24 11.5817 20.4183 8 16 8ZM16 10C19.3137 10 22 12.6863 22 16C22 19.3137 19.3137 22 16 22C12.6863 22 10 19.3137 10 16C10 12.6863 12.6863 10 16 10Z" fill="white"/>
+                        <circle cx="13" cy="15" r="1.5" fill="white"/>
+                        <circle cx="19" cy="15" r="1.5" fill="white"/>
+                        <path d="M13 18C13 18 14 19.5 16 19.5C18 19.5 19 18 19 18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                                <stop offset="0%" stop-color="#667eea"/>
+                                <stop offset="100%" stop-color="#764ba2"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h1>FinBot Pioneer</h1>
+                </div>
+                <p class="subtitle">Intelligent Investment Assistant</p>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="info-card">
+                    <h3>📚 Knowledge Base</h3>
+                    <div class="stat">
+                        <span class="stat-value" id="docCount">{{ doc_count }}</span>
+                        <span class="stat-label">Documents Loaded</span>
+                    </div>
+                    {% if doc_names %}
+                    <div class="doc-list">
+                        <p class="doc-list-title">Loaded files:</p>
+                        <ul id="docList">
+                            {% for doc in doc_names %}
+                            <li>{{ doc }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    <button class="btn-secondary" onclick="reloadDocuments()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C9.84827 2 11.4957 2.86429 12.5648 4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M12 2V4.5H9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Reload Documents
+                    </button>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-secondary" onclick="clearConversation()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 4H14M6 4V3C6 2.44772 6.44772 2 7 2H9C9.55228 2 10 2.44772 10 3V4M12 4V13C12 13.5523 11.5523 14 11 14H5C4.44772 14 4 13.5523 4 13V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        Clear Chat
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area">
+            <div class="chat-header">
+                <h2>Chat</h2>
+                <div class="status">
+                    <span class="status-indicator"></span>
+                    <span>Online</span>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <div class="welcome-icon">👋</div>
+                    <h2>Welcome to FinBot Pioneer!</h2>
+                    <p>Your intelligent investment assistant. I analyze financial data, provide market insights, and help you make informed investment decisions.</p>
+                    <div class="suggestions">
+                        <div class="suggestion-title">Try asking:</div>
+                        <button class="suggestion-chip" onclick="sendSuggestion('Should I invest in Reliance?')">
+                            Should I invest in Reliance?
+                        </button>
+                        <button class="suggestion-chip" onclick="sendSuggestion('Analyze TCS stock for me')">
+                            Analyze TCS stock for me
+                        </button>
+                        <button class="suggestion-chip" onclick="sendSuggestion('What documents do you have?')">
+                            What documents do you have?
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Type your message here..." 
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                    ></textarea>
+                    <button class="send-button" onclick="sendMessage()" id="sendButton">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-hint">Press Enter to send, Shift+Enter for new line</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
