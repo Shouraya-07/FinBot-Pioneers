@@ -2,7 +2,7 @@
 
 
 
-**Your Intelligent Investment Assistant for Indian Markets**A beautiful, modern web interface for your AI chatbot with RAG (Retrieval-Augmented Generation) capabilities using a **local GGUF model**.
+**Your Intelligent Investment Assistant for Indian Markets** A beautiful, modern web interface for your AI chatbot with RAG (Retrieval-Augmented Generation) capabilities using a **local GGUF model**.
 
 
 
@@ -496,3 +496,4 @@ For issues or questions, check the terminal logs for error messages.
 **Built with ❤️ for Indian Investors**
 
 *FinBot Pioneer - Your Intelligent Investment Companion* 🎯📈
+
